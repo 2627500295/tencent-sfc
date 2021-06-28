@@ -1,0 +1,238 @@
+### 组织信息
+
+# 组织ID
+
+# org: ''
+
+### 应用信息
+
+# 应用名称
+app: example
+
+# 环境名称
+stage: ${env:STAGE}
+
+### 组件信息
+
+# 组件名称
+component: scf
+
+# 组件实例名称
+name: scf
+
+### 组件参数配置
+
+# 组件参数
+inputs:
+  # 云函数名称
+  name: ${app}-${name}-${stage}
+
+  # 描述
+  description: ${name} for ${app}-${stage}
+
+  # 项目代码
+  src:
+    # 目标路径
+    src: ./dist
+
+    # 排除
+    # exclude:
+    #   - 'src/**'
+
+  # 入口
+  handler: index.main
+
+  # 函数命名空间
+  namespace: default
+
+  # 函数类型
+  type: event
+
+  # 运行环境
+  runtime: Nodejs12.16
+
+  # 部署目标地区
+  region: ap-hongkong
+
+  # 内存大小
+  memorySize: 128
+
+  # 函数执行超时时间
+  timeout: 20
+
+  # 初始化超时时间
+  initTimeout: 3
+
+  # 是否固定出口 IP
+  eip: true
+
+  # 是否开启公网访问
+  publicAccess: true
+
+  # 是否自动在线安装依赖
+  installDependency: false
+
+  # 是否启用异步执行（长时间运行）
+  asyncRunEnable: false
+
+  # 是否状态追踪
+  traceEnable: false
+
+  # 是否忽略触发器部署
+  ignoreTriggers: false
+
+  #  环境变量
+  environment:
+    # 环境变量对象
+    variables:
+      NODE_ENV: production
+
+  # 标签配置
+  tags:
+    CLI: serverless
+    REGION: 香港
+
+  # 私有网络配置
+  # vpcConfig:
+  #   # 私有网络的Id
+  #   vpcId: vpc-7bj5k3ma
+  #   # 子网ID
+  #   subnetId: subnet-82swsrs9
+
+  # cfs配置
+  # cfs:
+  #   - cfsId: cfs-123
+  #     mountInsId: cfs-123
+  #     localMountDir: /mnt/
+  #     remoteMountDir: /
+
+  # 死信队列配置
+  # deadLetter:
+  #   type: deadLetterType
+  #   name: deadLetterName
+  #   filterType: deadLetterFilterType
+
+  # layer 配置
+  # layers:
+  #   # layer名称
+  #   - name: scfLayer
+  #     # 版本
+  #     version: 1
+
+  # 函数日志
+  # cls:
+  #   logsetId: ClsLogsetId
+  #   topicId: ClsTopicId
+
+  # 镜像配置
+  # image:
+  #   # 容器镜像服务名称
+  #   registryId: tcr-xxx
+  #   # 镜像类型 <personal - 个人 / enterprise - 企业版 / public - 镜像模板>
+  #   imageType: personal
+  #   # 镜像地址
+  #   imageUri: ccr.ccs.tencentyun.com/sls-scf/nodejs_test:latest@sha256:xxx
+  #   # 容器启动命名
+  #   command: node index.js
+  #   # 容器启动参数
+  #   args: test
+
+  # 触发器
+  events:
+    # 网关触发器
+    - apigw:
+        # 参数
+        parameters:
+          # 网关 Service ID
+          # serviceId: ''
+
+          # 网关 API 名称
+          serviceName: ${app}_${name}_apigw_${stage}
+
+          # 描述
+          description: '${name} apigw for ${app}-${stage}'
+
+          # 请求类型
+          protocols:
+            - http
+
+          # 网络类型
+          netTypes:
+            - OUTER
+            # - INNER
+
+          # 发布环境 <release / test / prepub>
+          environment: release
+
+          # 自定义域名
+          customDomains:
+            # 域名
+            - domain: openapi.mincdn.cn
+
+              # 请求类型
+              protocols:
+                - http
+
+          # 端点
+          endpoints:
+            - # 路径
+              path: /
+              # API ID
+              # apiId: "api-g1gdcxk6"
+
+              # API 名称
+              # apiName: index
+
+              # API 描述
+              # description: ''
+
+              # 自定义响应配置返回类型
+              responseType: JSON
+
+              # 请求方法
+              method: ANY
+
+              # 是否需要开启跨域
+              enableCORS: false
+
+              # 是否开启 Base64 编码
+              isBase64Encoded: false
+
+              # 是否开启 Base64 编码的 header 触发
+              isBase64Trigger: false
+
+              # 超时时间
+              # serviceTimeout: 15
+
+              # 鉴权类型
+              # <NONE 免鉴权 / SECRET 密钥对 / OAUTH >
+              # authType: SECRET
+
+              # 业务类型
+              # businessType: NORMAL
+
+              # 前端参数
+              # param:
+              #   - name: abc
+              #     position: PATH
+              #     required: true
+              #     type: string
+              #     defaultValue: abc
+              #     desc: mytest
+
+              # SCF 配置
+              function:
+                # 关联版本
+                functionQualifier: $LATEST
+
+                # 集成响应
+                isIntegratedResponse: true
+
+              # Header 触发 Base64 编码规则
+              # base64EncodedTriggerRules:
+              #   - name: Accept
+              #     value:
+              #       - image/jpeg
+              #   - name: Content_Type
+              #     value:
+              #       - image/jpeg
