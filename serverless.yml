@@ -1,0 +1,130 @@
+### 应用信息
+
+# 应用名称
+app: example
+
+# 环境名称
+stage: ${env:STAGE}
+
+### 组件信息
+
+# 组件名称
+component: scf
+
+# 组件实例名称
+name: scf
+
+### 组件参数配置
+
+# 组件参数
+inputs:
+  # 云函数名称
+  name: ${app}-${name}-${stage}
+
+  # 描述
+  description: ${name} for ${app}-${stage}
+
+  # 项目代码路径
+  src:
+    src: ./dist
+    exclude:
+      - 'src/**'
+
+  # 入口
+  handler: index.main
+
+  # 函数命名空间
+  namespace: default
+
+  # 函数类型
+  type: event
+
+  # 运行环境
+  runtime: Nodejs12.16
+
+  # 部署目标地区
+  region: ap-beijing
+
+  # 内存大小
+  memorySize: 256
+
+  # 函数执行超时时间
+  timeout: 60
+
+  # 初始化超时时间
+  initTimeout: 3
+
+  # 是否自动在线安装依赖
+  installDependency: false
+
+  # 启用角色鉴权
+  enableRoleAuth: true
+
+  # 是否固定出口 IP
+  eip: true
+
+  # 是否开启公网访问
+  publicAccess: true
+
+  #  环境变量
+  environment:
+    # 环境变量对象
+    variables:
+      NODE_ENV: production
+
+  # 标签配置
+  tags:
+    CLI: serverless
+
+  # 私有网络配置
+  # vpcConfig:
+  #   # 私有网络的Id
+  #   vpcId: ""
+
+  #   # 子网ID
+  #   subnetId: ""
+
+  # 触发器
+  events:
+    # 网关触发器
+    - apigw:
+        # 参数
+        parameters:
+          # 网关 ID
+          # serviceId: ""
+
+          # 网关 API 名称
+          serviceName: ${app}_${name}_apigw_${stage}
+
+          # 描述
+          description: '${name} apigw for ${app}-${stage}'
+
+          # 请求类型
+          protocols:
+            - http
+            - https
+
+          # 发布环境 <release / test / prepub>
+          environment: release
+
+          # 端点
+          endpoints:
+            # 路径
+            - path: /
+
+              # 请求方法
+              method: ANY
+
+              # 支持CORS
+              enableCORS: false
+
+              # 返回类型
+              responseType: JSON
+
+              # 云函数
+              function:
+                # 关联版本
+                functionQualifier: $LATEST
+
+                # 集成响应
+                isIntegratedResponse: true
