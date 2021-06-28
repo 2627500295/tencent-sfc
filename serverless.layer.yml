@@ -1,0 +1,40 @@
+# 组织ID
+# org: ''
+
+# 应用名称
+app: example
+
+# 环境名称
+stage: ${env:STAGE}
+
+### 组件信息
+
+# 组件名称
+component: layer
+
+# 组件实例名称
+name: layer
+
+# 组件参数
+inputs:
+  # 名称
+  name: ${app}-${name}-${stage}
+
+  # 描述
+  description: 'Nest.JS v8.0.0'
+
+  # 部署地区
+  region: ap-hongkong
+
+  # 代码路径
+  src:
+    # 路径
+    src: ./node_modules
+
+    # 目标目录
+    targetDir: node_modules
+
+  # 运行环境
+  runtimes:
+    - CustomRuntime
+    - Nodejs12.16

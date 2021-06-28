@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cp {package.json,yarn.lock,.npmrc} dist;
+
+yarn deploy --debug
+
