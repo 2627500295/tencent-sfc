@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { HttpResponse } from '../lib/helpers';
+import { HttpResponse } from '../shared/helpers';
 
 @Injectable()
 export class ActuatorService {

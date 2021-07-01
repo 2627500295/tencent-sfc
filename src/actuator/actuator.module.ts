@@ -4,6 +4,6 @@ import { ActuatorController } from './actuator.controller';
 
 @Module({
   controllers: [ActuatorController],
-  providers: [ActuatorService]
+  providers: [ActuatorService],
 })
 export class ActuatorModule {}

@@ -1,0 +1,1 @@
+export const PERMISSIONS_METADATA = '__PERMISSIONS__';

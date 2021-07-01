@@ -1,16 +1,16 @@
 import express from 'express';
 
-import { findAPortNotInUse } from 'portscanner';
-
-import type { ListenOptions } from 'net';
-
-import { xterm } from 'cli-color';
-
 import { NestFactory } from '@nestjs/core';
 
 import { ExpressAdapter } from '@nestjs/platform-express';
 
 import { ConfigService } from '@nestjs/config';
+
+import { findAPortNotInUse } from 'portscanner';
+
+import type { ListenOptions } from 'net';
+
+import { xterm } from 'cli-color';
 
 import { AppModule } from './app.module';
 
@@ -25,7 +25,7 @@ export async function bootstrap() {
   const application = await NestFactory.create(AppModule, adapter);
 
   // 兼容云函数与本地开发
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'local') {
     // ConfigServices
     const configService = application.get(ConfigService);
 
@@ -54,6 +54,6 @@ export async function bootstrap() {
 }
 
 // 开发模式下启动开发
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'local') {
   bootstrap();
 }

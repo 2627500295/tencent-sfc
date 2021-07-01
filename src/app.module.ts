@@ -1,6 +1,13 @@
-import { Module } from '@nestjs/common';
+import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 
 import { ConfigModule } from '@nestjs/config';
+
+import {
+  ResponseTimeMiddleware,
+  XPoweredByMiddleware,
+  CookieParserMiddleware,
+  ConnectRidMiddleware,
+} from './shared/middlewares';
 
 import { ActuatorModule } from './actuator/actuator.module';
 
@@ -19,4 +26,18 @@ import { ActuatorModule } from './actuator/actuator.module';
   providers: [],
   exports: [],
 })
-export class AppModule {}
+export class AppModule {
+  public configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(
+        XPoweredByMiddleware,
+        ResponseTimeMiddleware,
+        CookieParserMiddleware,
+        ConnectRidMiddleware
+      )
+      .forRoutes({
+        path: '*',
+        method: RequestMethod.ALL,
+      });
+  }
+}
