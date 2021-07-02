@@ -1,0 +1,20 @@
+#!/bin/bash
+
+rm -r layer
+
+mkdir layer;
+
+cp {package.json,yarn.lock,.npmrc} layer;
+
+cp serverless.layer.yml layer/serverless.yml
+
+cd layer
+
+yarn install --production
+
+../node_modules/.bin/serverless deploy
+
+cd ..
+
+rm -r layer
+

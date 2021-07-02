@@ -2,6 +2,8 @@ import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 
 import { ConfigModule } from '@nestjs/config';
 
+import { ActuatorModule } from './actuator';
+
 import {
   ResponseTimeMiddleware,
   XPoweredByMiddleware,
@@ -9,7 +11,8 @@ import {
   ConnectRidMiddleware,
 } from './shared/middlewares';
 
-import { ActuatorModule } from './actuator/actuator.module';
+// import { ActuatorModule } from './actuator/actuator.module';
+import { HomeModule } from './home/home.module';
 
 @Module({
   imports: [
@@ -20,7 +23,20 @@ import { ActuatorModule } from './actuator/actuator.module';
       load: [],
       isGlobal: true,
     }),
-    ActuatorModule,
+
+    /**
+     * Actuator
+     */
+    ActuatorModule.forRoot({
+      registration: {
+        adminServerUrl: '',
+        name: 'core',
+        serviceUrl: '',
+        metadata: {},
+      },
+    }),
+
+    HomeModule,
   ],
   controllers: [],
   providers: [],

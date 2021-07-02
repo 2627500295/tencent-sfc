@@ -13,6 +13,7 @@ import { findAPortNotInUse } from 'portscanner';
 import { xterm } from 'cli-color';
 
 import { AppModule } from './app.module';
+import { VersioningType } from '@nestjs/common';
 
 export interface ListenOptions {
   host: string;
@@ -30,6 +31,12 @@ export async function createNestServer(
 ) {
   // 创建实例
   const application = await NestFactory.create(AppModule, adapter, options);
+
+  // 启用版本
+  application.enableVersioning({
+    type: VersioningType.URI,
+    prefix: 'v',
+  });
 
   // 初始化应用
   await application.init();
@@ -50,7 +57,7 @@ export async function bootstrap() {
 
   // Nest 应用选项
   const nestApplicationOptions = {
-    logger: false,
+    logger: true,
   };
 
   // 创建 Nest 服务

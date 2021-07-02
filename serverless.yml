@@ -101,7 +101,7 @@ inputs:
       name: example-layer-dev
 
       # 版本
-      version: 2
+      version: 6
 
   # 触发器
   events:

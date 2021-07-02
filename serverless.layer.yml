@@ -21,7 +21,7 @@ inputs:
   name: ${app}-${name}-${stage}
 
   # 描述
-  description: ' '
+  description: 'Nest.JS v8.0.0-alpha'
 
   # 部署地区
   region: ap-hongkong
@@ -29,7 +29,7 @@ inputs:
   # 代码路径
   src:
     # 路径
-    src: ./dist/node_modules
+    src: ./node_modules
 
     # 目标目录
     targetDir: node_modules
