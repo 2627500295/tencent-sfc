@@ -84,26 +84,16 @@ inputs:
   tags:
     CLI: serverless
     REGION: 香港
+    LANG: NODE.JS
+    FRAMEWORK: NEST.JS
 
   # 私有网络配置
-  # vpcConfig:
-  #   # 私有网络的Id
-  #   vpcId: vpc-7bj5k3ma
-  #   # 子网ID
-  #   subnetId: subnet-82swsrs9
+  vpcConfig:
+    # 私有网络的Id
+    vpcId: vpc-7bj5k3ma
 
-  # cfs配置
-  # cfs:
-  #   - cfsId: cfs-123
-  #     mountInsId: cfs-123
-  #     localMountDir: /mnt/
-  #     remoteMountDir: /
-
-  # 死信队列配置
-  # deadLetter:
-  #   type: deadLetterType
-  #   name: deadLetterName
-  #   filterType: deadLetterFilterType
+    # 子网ID
+    subnetId: subnet-82swsrs9
 
   # layer 配置
   layers:
@@ -112,24 +102,6 @@ inputs:
 
       # 版本
       version: 2
-
-  # 函数日志
-  # cls:
-  #   logsetId: ClsLogsetId
-  #   topicId: ClsTopicId
-
-  # 镜像配置
-  # image:
-  #   # 容器镜像服务名称
-  #   registryId: tcr-xxx
-  #   # 镜像类型 <personal - 个人 / enterprise - 企业版 / public - 镜像模板>
-  #   imageType: personal
-  #   # 镜像地址
-  #   imageUri: ccr.ccs.tencentyun.com/sls-scf/nodejs_test:latest@sha256:xxx
-  #   # 容器启动命名
-  #   command: node index.js
-  #   # 容器启动参数
-  #   args: test
 
   # 触发器
   events:
@@ -221,12 +193,3 @@ inputs:
 
                 # 集成响应
                 isIntegratedResponse: true
-
-              # Header 触发 Base64 编码规则
-              # base64EncodedTriggerRules:
-              #   - name: Accept
-              #     value:
-              #       - image/jpeg
-              #   - name: Content_Type
-              #     value:
-              #       - image/jpeg
