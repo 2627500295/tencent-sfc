@@ -21,7 +21,7 @@ inputs:
   name: ${app}-${name}-${stage}
 
   # 描述
-  description: 'Nest.JS v8.0.0-alpha'
+  description: 'Nest.JS v8.0.0'
 
   # 部署地区
   region: ap-hongkong

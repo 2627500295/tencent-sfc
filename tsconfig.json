@@ -13,5 +13,6 @@
     "baseUrl": "./",
     "incremental": true,
     "paths": {}
-  }
+  },
+  "include": ["src", "typings"]
 }
