@@ -10,6 +10,8 @@ import { NestFactory } from '@nestjs/core';
 
 import { ExpressAdapter } from '@nestjs/platform-express';
 
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+
 import { ConfigService } from '@nestjs/config';
 
 import { AppModule } from './app.module';
@@ -35,6 +37,27 @@ export async function bootstrap() {
   application.enableVersioning({
     type: VersioningType.URI,
     prefix: 'v',
+  });
+
+  // 微服务
+  await application.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.RMQ,
+    options: {
+      urls: [
+        {
+          protocol: 'amqps',
+          hostname: 'cougar.rmq.cloudamqp.com',
+          port: 5672,
+          username: 'jpczqwdg',
+          password: 'IjArd4ge7qScM69dOlJfxmhpQg1HfFBf',
+          vhost: 'jpczqwdg',
+        },
+      ],
+      queue: 'ip',
+      queueOptions: {
+        durable: false,
+      },
+    },
   });
 
   // 初始化应用
