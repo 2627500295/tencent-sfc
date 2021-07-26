@@ -1,7 +1,5 @@
 import serverlessHttp from 'serverless-http';
 
-import type { InstanceRequest } from './shared/interfaces';
-
 import { bootstrap } from './main';
 
 export async function main(event: any, context: any) {
@@ -13,7 +11,7 @@ export async function main(event: any, context: any) {
   /**
    * 获取请求
    */
-  const request: InstanceRequest = instance.request;
+  const request = instance.request;
 
   /**
    * 绑定事件

@@ -14,10 +14,7 @@ export class HttpResponse<T extends any = any> {
    * @param data - 数据
    * @param code - 状态码
    */
-  public static success<U extends any>(
-    data: U,
-    code: number = 200,
-  ): HttpResponse<U> {
+  public static success<U = any>(data: U, code: number = 200): HttpResponse<U> {
     return new this<U>(code, data, 'success', true);
   }
 
@@ -27,11 +24,12 @@ export class HttpResponse<T extends any = any> {
    * @param message - 错误消息
    * @param code - 状态码
    */
-  public static failure(
+  public static failure<U = null>(
     message: string,
     code: number = 0,
-  ): HttpResponse<null> {
-    return new this<null>(code, null, message, false);
+    data: U = null
+  ): HttpResponse {
+    return new this(code, data, message, false);
   }
 
   /**
@@ -46,6 +44,6 @@ export class HttpResponse<T extends any = any> {
     public readonly code: string | number,
     public readonly data: T,
     public readonly message: string | string[],
-    public readonly success: boolean,
+    public readonly success: boolean
   ) {}
 }

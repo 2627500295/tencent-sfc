@@ -1,49 +1,20 @@
 import express from 'express';
 
-import { NestApplicationOptions } from '@nestjs/common';
+import { findAPortNotInUse } from 'portscanner';
 
-import { NestFactory, AbstractHttpAdapter } from '@nestjs/core';
+import { xterm } from 'cli-color';
+
+import { VersioningType } from '@nestjs/common';
+
+import { NestFactory } from '@nestjs/core';
 
 import { ExpressAdapter } from '@nestjs/platform-express';
 
 import { ConfigService } from '@nestjs/config';
 
-import { findAPortNotInUse } from 'portscanner';
-
-import { xterm } from 'cli-color';
-
 import { AppModule } from './app.module';
-import { VersioningType } from '@nestjs/common';
 
-export interface ListenOptions {
-  host: string;
-  port: number;
-}
-
-/**
- * 创建 Nest 服务
- *
- * @param server
- */
-export async function createNestServer(
-  adapter: AbstractHttpAdapter,
-  options?: NestApplicationOptions
-) {
-  // 创建实例
-  const application = await NestFactory.create(AppModule, adapter, options);
-
-  // 启用版本
-  application.enableVersioning({
-    type: VersioningType.URI,
-    prefix: 'v',
-  });
-
-  // 初始化应用
-  await application.init();
-
-  // 返回应用
-  return application;
-}
+import { ListenOptions } from './shared/interfaces';
 
 /**
  * 启动器
@@ -55,45 +26,41 @@ export async function bootstrap() {
   // 适配器
   const adapter = new ExpressAdapter(instance);
 
-  // Nest 应用选项
-  const nestApplicationOptions = {
-    logger: true,
-  };
+  // 创建 Nest 实例
+  const application = await NestFactory.create(AppModule, adapter, {
+    logger: false,
+  });
 
-  // 创建 Nest 服务
-  const application = await createNestServer(adapter, nestApplicationOptions);
+  // 启用版本
+  application.enableVersioning({
+    type: VersioningType.URI,
+    prefix: 'v',
+  });
+
+  // 初始化应用
+  await application.init();
 
   // 兼容云函数与本地开发
   if (process.env.NODE_ENV === 'local') {
-    /**
-     * 获取配置服务
-     */
+    // 获取配置服务
     const configService = application.get(ConfigService);
 
-    /**
-     * 默认 Lister 选项
-     */
+    // 默认 Lister 选项
     const defaultListenOptions: ListenOptions = {
       host: '0.0.0.0',
       port: 3000,
     };
 
-    /**
-     * 获取监听选项
-     */
+    // 获取监听选项
     const listenOptions = configService.get<ListenOptions>(
       'listen',
       defaultListenOptions
     );
 
-    /**
-     * 获取端口
-     */
+    // 获取端口
     const port = await findAPortNotInUse(listenOptions.port);
 
-    /**
-     * 监听
-     */
+    // 监听
     instance.listen(port, () =>
       console.log(`\n\t🚀  Server running on port ${xterm(3)(port)}`)
     );

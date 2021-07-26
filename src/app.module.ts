@@ -1,21 +1,16 @@
 import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
-import { ActuatorModule } from './actuator';
+// import { TypeOrmModule } from '@nestjs/typeorm';
 
-import {
-  ResponseTimeMiddleware,
-  XPoweredByMiddleware,
-  CookieParserMiddleware,
-  ConnectRidMiddleware,
-} from './shared/middlewares';
+import { CookieParserMiddleware } from './shared/middlewares';
 
-// import { ActuatorModule } from './actuator/actuator.module';
-import { HomeModule } from './home/home.module';
+import { HomeModule } from './home';
 
 @Module({
   imports: [
+    // Config
     ConfigModule.forRoot({
       envFilePath: [],
       expandVariables: true,
@@ -24,17 +19,14 @@ import { HomeModule } from './home/home.module';
       isGlobal: true,
     }),
 
-    /**
-     * Actuator
-     */
-    ActuatorModule.forRoot({
-      registration: {
-        adminServerUrl: '',
-        name: 'core',
-        serviceUrl: '',
-        metadata: {},
-      },
-    }),
+    // TypeORM
+    // TypeOrmModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   inject: [ConfigService],
+    //   useFactory() {
+    //     return {};
+    //   },
+    // }),
 
     HomeModule,
   ],
@@ -44,16 +36,9 @@ import { HomeModule } from './home/home.module';
 })
 export class AppModule {
   public configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(
-        XPoweredByMiddleware,
-        ResponseTimeMiddleware,
-        CookieParserMiddleware,
-        ConnectRidMiddleware
-      )
-      .forRoutes({
-        path: '*',
-        method: RequestMethod.ALL,
-      });
+    consumer.apply(CookieParserMiddleware).forRoutes({
+      path: '*',
+      method: RequestMethod.ALL,
+    });
   }
 }
